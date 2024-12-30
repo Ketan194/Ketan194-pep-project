@@ -36,7 +36,7 @@ public class SocialMediaController {
         app.post("/register", this::postAccountHandler);
         app.post("/login", this::postLoginHandler);
 
-        app.start(8080);
+        // app.start(8080);
 
         return app;
     }

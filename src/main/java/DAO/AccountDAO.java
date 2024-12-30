@@ -62,7 +62,7 @@ public class AccountDAO {
             while(rs.next()){ // When there is something in the result set it should be the Account in the database
                 Account account = new Account(rs.getInt("account_id"),
                         rs.getString("username"),
-                        rs.getString("passwords")); 
+                        rs.getString("password")); 
                 // Create an Account instance based on information in database
                 return account; // return Account instance
             } // end while loop
@@ -74,19 +74,23 @@ public class AccountDAO {
         return null; // If an account with that username does not exist then return null
     } // end getAccountByUsername()
 
+    /* 
     public Account getAccountByUsernameAndPassword(Account account) {
         Connection connection = ConnectionUtil.getConnection(); // Make connection
 
         try {
             String sql = "select * from account where username = ? and password = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
+
+            preparedStatement.setString(1, account.getUsername());
+            preparedStatement.setString(2, account.getPassword());
             
             ResultSet rs = preparedStatement.executeQuery(); // Execute query and get result set
 
             while(rs.next()){ // When there is something in the result set it should be the Account in the database
                 Account foundAccount = new Account(rs.getInt("account_id"),
                         rs.getString("username"),
-                        rs.getString("passwords")); 
+                        rs.getString("password")); 
                 // Create an Account instance based on information in database
                 return foundAccount; // return Account instance
             } // end while loop
@@ -96,6 +100,6 @@ public class AccountDAO {
         } // end catch block
 
         return null; // If an account with that username does not exist then return null
-    }
-    
+    } // end getAccountByUsernameAndPassword()
+    */
 }

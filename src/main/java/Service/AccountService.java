@@ -17,10 +17,10 @@ public class AccountService {
     } // end constructor
 
     public Account addAccount(Account account) {
-        if (account.getUsername().isEmpty() || account.getPassword().length() <= 4) { // Make sure username is not empty and password is at least 4 char long
+        if (account.getUsername().isEmpty() || account.getPassword().length() < 4) { // Make sure username is not empty and password is at least 4 char long
             return null; // return null if bad account
         } // end if statement 
-        else if (accountDAO.getAccountByUsername(account.getUsername()) == null) { // If username and password meet basic requiremnts then check if the username already exists. 
+        if (accountDAO.getAccountByUsername(account.getUsername()) != null) { // If username and password meet basic requiremnts then check if the username already exists. 
             return null; // return null if username is already in use
         } // end else if statement 
 
@@ -29,7 +29,16 @@ public class AccountService {
     } // end addAccount()
 
     public Account login(Account account) {
-        return accountDAO.getAccountByUsernameAndPassword(account);
-    }
+        Account temp = accountDAO.getAccountByUsername(account.getUsername());
+        if (temp == null) {
+            return null;
+        }
+        if (account.getPassword().equals(temp.getPassword())) {
+            return temp;
+        } // end if statement
+        else {
+            return null;
+        } // end else statement
+    } // end login()
     
 }
