@@ -2,18 +2,22 @@ package Service;
 
 import Model.Account;
 import DAO.AccountDAO;
+import Model.Message;
+import DAO.MessageDAO;
 
 import java.util.List;
 
 public class AccountService {
 
     private AccountDAO accountDAO;
+    private MessageDAO messageDAO;
     /**
-     * no-args constructor for creating a new AuthorService with a new AuthorDAO.
+     * no-args constructor for creating a new AccountService with a new AccountDAO and MessageDAO.
      * There is no need to change this constructor.
      */
     public AccountService(){
         accountDAO = new AccountDAO();
+        messageDAO = new MessageDAO();
     } // end constructor
 
     public Account addAccount(Account account) {
