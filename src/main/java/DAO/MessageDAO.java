@@ -5,6 +5,8 @@ import Model.Account;
 import Model.Message;
 import Util.ConnectionUtil;
 
+import static org.mockito.ArgumentMatchers.nullable;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -69,4 +71,30 @@ public class MessageDAO {
 
         return messages;
     } // end getAllMessages()
+
+    public Message getMessageById(int id) {
+        Connection connection = ConnectionUtil.getConnection();
+
+        try {
+            String sql = "select * from message where message_id = ?";
+
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+
+            preparedStatement.setInt(1, id);
+
+            ResultSet rs = preparedStatement.executeQuery();
+
+            while (rs.next()) {
+                return new Message(rs.getInt("message_id"),
+                        rs.getInt("posted_by"),
+                        rs.getString("message_text"),
+                        rs.getLong("time_posted_epoch")); // Create Message object
+            } // end while loop
+        } // end try block
+        catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } // end catch block
+
+        return null;
+    } // end getMessageById()
 }
