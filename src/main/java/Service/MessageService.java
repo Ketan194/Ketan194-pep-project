@@ -39,5 +39,14 @@ public class MessageService {
 
         return messageDAO.insertMessage(message); // Insert message and return added Message object
     } // end addMessage()
+
+    /**
+     * Method to get a List of all the messages in the database. 
+     * 
+     * @return List of all messages in database
+     */
+    public List<Message> getAllMessages() {
+        return messageDAO.getAllMessages();
+    } // end getAllMessages()
     
 }
