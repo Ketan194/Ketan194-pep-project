@@ -5,9 +5,11 @@ import Model.Message;
 import Service.AccountService;
 import Service.MessageService;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.List;
+import java.util.Map;
 
 import io.javalin.Javalin;
 import io.javalin.http.Context;
@@ -38,8 +40,9 @@ public class SocialMediaController {
         app.post("/messages", this::postMessageHandler);
         app.get("/messages", this::getAllMessagesHandler);
         app.get("/messages/{message_id}", this::getMessageByIdHandler);
-
-        // app.start(8080);
+        app.delete("/messages/{message_id}", this::deleteMessageHandler);
+        app.patch("/messages/{message_id}", this::patchMessageHandler);
+        app.get("/accounts/{account_id}/messages", this::getMessagesByAccountHandler);
 
         return app;
     }
@@ -113,6 +116,49 @@ public class SocialMediaController {
             ctx.status(200);
         } // end else statement 
     } // end getMessageByIdHandler()
+
+    private void deleteMessageHandler(Context ctx) throws JsonProcessingException {
+        int message_id = Integer.parseInt(ctx.pathParam("message_id"));
+        Message message = messageService.deleteMessage(message_id);
+
+        if (message != null) {
+            ctx.json(message);
+        } // end if statement
+        else {
+            ctx.status(200);
+        } // end else statement 
+    } // end deleteMessageHandler()
+
+    private void patchMessageHandler(Context ctx) throws JsonProcessingException {
+        int message_id = Integer.parseInt(ctx.pathParam("message_id"));
+
+        ObjectMapper mapper = new ObjectMapper();
+        Map<String, String> body = mapper.readValue(ctx.body(), Map.class);
+        // Use ObjectMapper to convert the json line into a Map where the key and value are both strings. 
+
+
+        Message message = messageService.updateMessage(message_id, body.get("message_text"));
+
+        if (message != null) {
+            ctx.json(message);
+        } // end if statement 
+        else {
+            ctx.status(400);
+        } // end else statement
+
+    } // end patchMessageHandler()
+
+    private void getMessagesByAccountHandler(Context ctx) throws JsonProcessingException {
+        int account_id = Integer.parseInt(ctx.pathParam("account_id"));
+        List<Message> messages = messageService.getMessagesByAccount(account_id);
+
+        if (messages != null) {
+            ctx.json(messages);
+        } // end if statement
+        else {
+            ctx.status(200);
+        } // end else statement
+    } // end getMessagesByAccountHandler()
 
 
 }

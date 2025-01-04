@@ -49,8 +49,53 @@ public class MessageService {
         return messageDAO.getAllMessages();
     } // end getAllMessages()
 
+    /**
+     * Finds and returns a message from the database based on its message_id.
+     *
+     * @param id int representation of the message_id
+     * @return The full message from the database
+     */
     public Message getMessageById(int id) {
         return messageDAO.getMessageById(id);
     } // end getMessageById()
+
+    /**
+     * Finds a message in the database using its message_id, if it exists, and returns the Message.
+     * 
+     * @param id int representation of the message_id
+     * @return The Message in the database or null if it did not exists. 
+     */
+    public Message deleteMessage(int id) {
+        Message found = getMessageById(id);
+
+        if (found == null) {
+            return null;
+        } // end if statement
+        else {
+            return found;
+        } // end else statement 
+    } // end deleteMessage()
+
+    public Message updateMessage(int id, String text) {
+        if (text.isEmpty() || text.length() > 255) {
+            return null;
+        } // end if statement
+
+        Message found = getMessageById(id);
+
+        if (found == null) {
+            return null;
+        } // end if statement 
+        else {
+            found.setMessage_text(text);
+            messageDAO.updateMessageText(id, text);
+        } // end else statement 
+
+        return found;
+    } // end updateMessage()
+
+    public List<Message> getMessagesByAccount(int account_id) {
+        return messageDAO.getMessagesByAccount(account_id);
+    } // end getMessagesByAccount()
     
 }

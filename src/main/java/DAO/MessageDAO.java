@@ -97,4 +97,74 @@ public class MessageDAO {
 
         return null;
     } // end getMessageById()
+
+    public void deleteMessage(int id) {
+        Connection connection = ConnectionUtil.getConnection();
+
+        try {
+            String sql = "delete from message where message_id = ?";
+
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+
+            preparedStatement.setInt(1, id);
+
+            preparedStatement.executeQuery();
+            return;
+        } // end try block
+        catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } // end catch block
+
+        return;
+    } // end deleteMessage()
+
+    public void updateMessageText(int id, String text) {
+        Connection connection = ConnectionUtil.getConnection();
+
+        try {
+            String sql = "update message message_text = ? where message_id = ?";
+
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+
+            preparedStatement.setString(1, text);
+            preparedStatement.setInt(2, id);
+
+            preparedStatement.executeQuery();
+            return;
+        } // end try block
+        catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } // end catch block
+
+        return;
+    } // end updateMessageText()
+
+    public List<Message> getMessagesByAccount(int account_id) {
+        Connection connection = ConnectionUtil.getConnection(); // Make connection
+
+        List<Message> messages = new ArrayList<>(); // Make list of Message objects
+
+        try {
+            String sql = "select * from message where posted_by = ?";
+
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+
+            preparedStatement.setInt(1, account_id);
+
+            ResultSet rs = preparedStatement.executeQuery();
+
+            while (rs.next()) {
+                Message message = new Message(rs.getInt("message_id"),
+                        rs.getInt("posted_by"),
+                        rs.getString("message_text"),
+                        rs.getLong("time_posted_epoch")); // Create Message object
+                messages.add(message); // Add object to list
+            } // end while loop
+        } // end try block
+        catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } // end catch block
+
+        return messages;
+    } // end getMessagesByAccount()
 }
