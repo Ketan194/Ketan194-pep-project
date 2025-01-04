@@ -1,19 +1,19 @@
 package DAO;
 
-
-import Model.Account;
 import Model.Message;
 import Util.ConnectionUtil;
-
-import static org.mockito.ArgumentMatchers.nullable;
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CountDownLatch;
 
 public class MessageDAO {
     
+    /**
+     * Adds a message to the database. 
+     * 
+     * @param message A Message object containing the information that needs to be added to the database. 
+     * @return A Message object will all the information that was added to the database, or null if inserting did not work. 
+     */
     public Message insertMessage(Message message) {
         Connection connection = ConnectionUtil.getConnection(); // Make connection
 
@@ -45,6 +45,11 @@ public class MessageDAO {
         return null;
     } // end insertMessage()
 
+    /**
+     * Retruns all the messages in the database as a List of Message objects. 
+     * 
+     * @return All the messages in the database as a List of Message objects, or null if there aren't any. 
+     */
     public List<Message> getAllMessages() {
         Connection connection = ConnectionUtil.getConnection(); // Make connection
 
@@ -72,6 +77,12 @@ public class MessageDAO {
         return messages;
     } // end getAllMessages()
 
+    /**
+     * Finds a message in the database based of its message_id. 
+     * 
+     * @param id int representation of message_id. 
+     * @return A Message object will all the information that was added to the database, or null if there isn't a message with that id. 
+     */
     public Message getMessageById(int id) {
         Connection connection = ConnectionUtil.getConnection();
 
@@ -98,6 +109,11 @@ public class MessageDAO {
         return null;
     } // end getMessageById()
 
+    /**
+     * Removes a message from the database using its message_id to find it in the database. 
+     * 
+     * @param id  int representation of message_id.
+     */
     public void deleteMessage(int id) {
         Connection connection = ConnectionUtil.getConnection();
 
@@ -118,6 +134,12 @@ public class MessageDAO {
         return;
     } // end deleteMessage()
 
+    /**
+     * Updates a message in the database by replacing its message_text with new text, finds the message using the message_id. 
+     * 
+     * @param id int representation of message_id.
+     * @param text String of new message_text
+     */
     public void updateMessageText(int id, String text) {
         Connection connection = ConnectionUtil.getConnection();
 
@@ -139,6 +161,12 @@ public class MessageDAO {
         return;
     } // end updateMessageText()
 
+    /**
+     * Retruns all the messages in the database that were posted by a specific user as a List of Message objects. 
+     * 
+     * @param account_id int representation of the acount_id
+     * @return All the messages in the database as a List of Message objects, or null if there aren't any. 
+     */
     public List<Message> getMessagesByAccount(int account_id) {
         Connection connection = ConnectionUtil.getConnection(); // Make connection
 

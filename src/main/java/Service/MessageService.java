@@ -1,13 +1,9 @@
 package Service;
 
-
-import Model.Account;
 import DAO.AccountDAO;
 import Model.Message;
 import DAO.MessageDAO;
-
 import java.util.List;
-
 
 public class MessageService {
 
@@ -76,24 +72,37 @@ public class MessageService {
         } // end else statement 
     } // end deleteMessage()
 
+    /**
+     * Holds logic needed to update a message in the database with new message_text.
+     * 
+     * @param id int representation of message_id
+     * @param text message_text that needs to replace hold message_text
+     * @return Message object after message was updated
+     */
     public Message updateMessage(int id, String text) {
-        if (text.isEmpty() || text.length() > 255) {
+        if (text.isEmpty() || text.length() > 255) { // Checks to make sure message isn't empty or too long
             return null;
         } // end if statement
 
-        Message found = getMessageById(id);
+        Message found = getMessageById(id); // Finds message using message_id
 
-        if (found == null) {
+        if (found == null) { // If message isn't found return null
             return null;
         } // end if statement 
         else {
-            found.setMessage_text(text);
-            messageDAO.updateMessageText(id, text);
+            found.setMessage_text(text); // Update message_text in Message object
+            messageDAO.updateMessageText(id, text); // Update message_text in database
         } // end else statement 
 
         return found;
     } // end updateMessage()
 
+    /**
+     * Get all the messages that were posted by a specific account as a List of Message objects. 
+     * 
+     * @param account_id int representation of account_id
+     * @return List<Message> holding all the messages that account posted, or null if there aren't any. 
+     */
     public List<Message> getMessagesByAccount(int account_id) {
         return messageDAO.getMessagesByAccount(account_id);
     } // end getMessagesByAccount()

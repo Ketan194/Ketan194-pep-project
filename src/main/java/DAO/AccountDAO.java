@@ -1,12 +1,9 @@
 package DAO;
 
 import Model.Account;
-import Model.Message;
 import Util.ConnectionUtil;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
 
 public class AccountDAO {
 
@@ -45,7 +42,7 @@ public class AccountDAO {
 
     /**
      * Helper function that finds if an accoount in the databse has a specific user name. 
-     * Can be used when adding a new account to the data base as well as when _________. 
+     * Can be used when adding a new account to the data base as well as when loging in an user. 
      * 
      * @param username The username to loook for in the database.
      * @return An Account object that is created from information in database  or  null if no such account exists. 
@@ -75,6 +72,13 @@ public class AccountDAO {
         return null; // If an account with that username does not exist then return null
     } // end getAccountByUsername()
 
+    /**
+     * Retrives an account from the database given the accounts id. 
+     * If the account does not exists null is returned. 
+     * 
+     * @param id int representation of the account_id
+     * @return An Account object with the filled in information from the database, or null if account does not exits. 
+     */
     public Account getAccountById(int id) {
         Connection connection = ConnectionUtil.getConnection(); // Make connection
 
@@ -101,32 +105,4 @@ public class AccountDAO {
         return null;
     } // end getAccountByID()
 
-    /* 
-    public Account getAccountByUsernameAndPassword(Account account) {
-        Connection connection = ConnectionUtil.getConnection(); // Make connection
-
-        try {
-            String sql = "select * from account where username = ? and password = ?";
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
-
-            preparedStatement.setString(1, account.getUsername());
-            preparedStatement.setString(2, account.getPassword());
-            
-            ResultSet rs = preparedStatement.executeQuery(); // Execute query and get result set
-
-            while(rs.next()){ // When there is something in the result set it should be the Account in the database
-                Account foundAccount = new Account(rs.getInt("account_id"),
-                        rs.getString("username"),
-                        rs.getString("password")); 
-                // Create an Account instance based on information in database
-                return foundAccount; // return Account instance
-            } // end while loop
-        } // end try block
-        catch(SQLException e){
-            System.out.println(e.getMessage());
-        } // end catch block
-
-        return null; // If an account with that username does not exist then return null
-    } // end getAccountByUsernameAndPassword()
-    */
 }

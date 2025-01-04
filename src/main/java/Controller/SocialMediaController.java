@@ -14,11 +14,7 @@ import java.util.Map;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 
-/**
- * TODO: You will need to write your own endpoints and handlers for your controller. The endpoints you will need can be
- * found in readme.md as well as the test cases. You should
- * refer to prior mini-project labs and lecture materials for guidance on how a controller may be built.
- */
+
 public class SocialMediaController {
     AccountService accountService;
     MessageService messageService;
@@ -31,6 +27,7 @@ public class SocialMediaController {
     /**
      * In order for the test cases to work, you will need to write the endpoints in the startAPI() method, as the test
      * suite must receive a Javalin object from this method.
+     * 
      * @return a Javalin app object which defines the behavior of the Javalin controller.
      */
     public Javalin startAPI() {
@@ -50,7 +47,8 @@ public class SocialMediaController {
     /**
      * Account post handler. 
      * 
-     * Mathod defines how to add an account anytime a post request is made to 'localhost:8080/regiseter'
+     * Method defines how to add an account anytime a post request is made to 'localhost:8080/regiseter'
+     * 
      * @param context The Javalin Context object manages information about both the HTTP request and response.
      * 
      * @throws JsonProcessingException will be thrown if there is an issue converting JSON into an object.
@@ -70,6 +68,15 @@ public class SocialMediaController {
         } // end else statement 
     } // end postAccountHandler()
 
+    /**
+     * Account Login handler. 
+     * 
+     * Method defines how to add an account anytime a post request is made to 'localhost:8080/login'
+     * 
+     * @param context The Javalin Context object manages information about both the HTTP request and response.
+     * 
+     * @throws JsonProcessingException will be thrown if there is an issue converting JSON into an object.
+     */
     private void postLoginHandler(Context ctx) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
 
@@ -85,6 +92,15 @@ public class SocialMediaController {
         } // end else statement 
     } // end postLoginHandler()
 
+    /** 
+     * Message post handler. 
+     * 
+     * Method defines how to add a message anytime a post request is made to 'localhost:8080/messages'
+     * 
+     * @param context The Javalin Context object manages information about both the HTTP request and response.
+     * 
+     * @throws JsonProcessingException will be thrown if there is an issue converting JSON into an object.
+     */
     private void postMessageHandler(Context ctx) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
 
@@ -100,11 +116,27 @@ public class SocialMediaController {
         } // end else statement 
     } // end postMessageHandler()
 
+    /**
+     * Get all messages handler. 
+     * 
+     * Method defines how to get all messages anytime a get request is made to 'localhost:8080/messages'
+     * 
+     * @param context The Javalin Context object manages information about both the HTTP request and response.
+     * 
+     * @throws JsonProcessingException will be thrown if there is an issue converting JSON into an object.
+     */
     private void getAllMessagesHandler(Context ctx) throws JsonProcessingException {
         List<Message> messages = messageService.getAllMessages();
         ctx.json(messages);
     } // end getAllMessagesHandler()
 
+    /**
+     * Get message by id handler. 
+     * 
+     * Method defines how to get a message anytime a get request is made to 'localhost:8080/messages/{message_id}'
+     * 
+     * @param context The Javalin Context object manages information about both the HTTP request and response.
+     */
     private void getMessageByIdHandler(Context ctx) {
         int message_id = Integer.parseInt(ctx.pathParam("message_id"));
         Message message = messageService.getMessageById(message_id);
@@ -117,6 +149,15 @@ public class SocialMediaController {
         } // end else statement 
     } // end getMessageByIdHandler()
 
+    /**
+     * Delete message handler.
+     * 
+     * Method defines how to remove a message anytime a delete request is made to 'localhost:8080/message/{message_id}'
+     * 
+     * @param context The Javalin Context object manages information about both the HTTP request and response.
+     * 
+     * @throws JsonProcessingException will be thrown if there is an issue converting JSON into an object.
+     */
     private void deleteMessageHandler(Context ctx) throws JsonProcessingException {
         int message_id = Integer.parseInt(ctx.pathParam("message_id"));
         Message message = messageService.deleteMessage(message_id);
@@ -129,6 +170,15 @@ public class SocialMediaController {
         } // end else statement 
     } // end deleteMessageHandler()
 
+    /**
+     * Patch message handler.
+     * 
+     * Method defines how to patch a message anytime a patch request is made to 'localhost:8080/messages/{message_id}'
+     * 
+     * @param context The Javalin Context object manages information about both the HTTP request and response.
+     * 
+     * @throws JsonProcessingException will be thrown if there is an issue converting JSON into an object.
+     */
     private void patchMessageHandler(Context ctx) throws JsonProcessingException {
         int message_id = Integer.parseInt(ctx.pathParam("message_id"));
 
@@ -148,6 +198,15 @@ public class SocialMediaController {
 
     } // end patchMessageHandler()
 
+    /**
+     * Get all messages by account_id handler. 
+     * 
+     * Method defines how to get all messages posted by a specific user anytime a get request is made to 'localhost:8080/accounts/{account_id}/messages'
+     * 
+     * @param context The Javalin Context object manages information about both the HTTP request and response.
+     * 
+     * @throws JsonProcessingException will be thrown if there is an issue converting JSON into an object.
+     */
     private void getMessagesByAccountHandler(Context ctx) throws JsonProcessingException {
         int account_id = Integer.parseInt(ctx.pathParam("account_id"));
         List<Message> messages = messageService.getMessagesByAccount(account_id);
@@ -159,6 +218,4 @@ public class SocialMediaController {
             ctx.status(200);
         } // end else statement
     } // end getMessagesByAccountHandler()
-
-
 }
